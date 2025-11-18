@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { useAuth } from './context/AuthContext';
 import MainLayout from './layouts/MainLayout';
 import LoginPage from './pages/LoginPage';
@@ -15,17 +13,6 @@ import UsersPage from './pages/UsersPage';
 import NotificationsPage from './pages/NotificationsPage';
 import SettingsPage from './pages/SettingsPage';
 import { initSocket } from './services/socket';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-  },
-});
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -42,87 +29,84 @@ function PrivateRoute({ children }) {
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <DashboardPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/map"
-            element={
-              <PrivateRoute>
-                <LiveMapPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/hospitals"
-            element={
-              <PrivateRoute>
-                <HospitalsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/users"
-            element={
-              <PrivateRoute>
-                <UsersPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/drivers"
-            element={
-              <PrivateRoute>
-                <DriversPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/patients"
-            element={
-              <PrivateRoute>
-                <PatientsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/emergencies"
-            element={
-              <PrivateRoute>
-                <EmergenciesPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/notifications"
-            element={
-              <PrivateRoute>
-                <NotificationsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <PrivateRoute>
-                <SettingsPage />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <DashboardPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/map"
+          element={
+            <PrivateRoute>
+              <LiveMapPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/hospitals"
+          element={
+            <PrivateRoute>
+              <HospitalsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute>
+              <UsersPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/drivers"
+          element={
+            <PrivateRoute>
+              <DriversPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/patients"
+          element={
+            <PrivateRoute>
+              <PatientsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/emergencies"
+          element={
+            <PrivateRoute>
+              <EmergenciesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <PrivateRoute>
+              <NotificationsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <PrivateRoute>
+              <SettingsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -3,6 +3,12 @@ import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebas
 import { auth } from '../../firebaseConfig';
 
 const AuthContext = createContext();
+const useSampleMode = import.meta.env.VITE_USE_SAMPLE_DATA === 'true';
+const SAMPLE_ADMIN = {
+  uid: 'sample-admin',
+  email: 'admin@example.com',
+  displayName: 'Sample Admin',
+};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -17,6 +23,13 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (useSampleMode) {
+      setUser(SAMPLE_ADMIN);
+      setLoading(false);
+      console.warn('[Auth] Sample mode enabled. Skipping Firebase Auth.');
+      return () => {};
+    }
+
     let unsubscribe;
     try {
       unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -36,11 +49,20 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
+    if (useSampleMode) {
+      const mockedUser = { ...SAMPLE_ADMIN, email: email || SAMPLE_ADMIN.email };
+      setUser(mockedUser);
+      return mockedUser;
+    }
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
   };
 
   const logout = async () => {
+    if (useSampleMode) {
+      setUser(null);
+      return;
+    }
     await signOut(auth);
   };
 

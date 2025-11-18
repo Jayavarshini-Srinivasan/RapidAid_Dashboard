@@ -1,38 +1,198 @@
-/* Live Map Page Styles - Responsive with viewport units */
-
+/* /// ADDED refreshed layout for real-time case map */
 .live-map-container {
   width: 100%;
-  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.map-wrapper {
-  width: 100%;
+.map-board { /* /// ADDED */
+  display: flex; /* /// ADDED */
+  gap: 1.5rem; /* /// ADDED */
+  align-items: flex-start; /* /// ADDED */
+} /* /// ADDED */
+
+.map-shell {
+  position: relative;
+  flex: 1 1 auto; /* /// ADDED */
   height: 80vh;
-  min-height: 60vh;
-  border-radius: 8px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
 }
 
-/* Mobile Responsive */
+.case-info-card {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  width: 280px;
+  border-radius: 20px;
+  padding: 1.5rem;
+  backdrop-filter: blur(18px);
+  background: rgba(5, 8, 20, 0.85);
+  color: #f8fafc;
+  box-shadow: 0 25px 55px rgba(5, 6, 23, 0.55);
+}
+
+.case-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.case-card-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.35rem 0;
+  font-size: 0.9rem;
+}
+
+.case-card-row span {
+  color: rgba(248, 250, 252, 0.6);
+}
+
+.case-card-row strong {
+  font-weight: 600;
+}
+
+.case-severity-chip {
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+
+.case-panel { /* /// ADDED */
+  width: 320px;
+  min-width: 300px;
+  background: rgba(4, 7, 20, 0.92);
+  border-radius: 18px;
+  padding: 1.25rem;
+  color: #f8fafc;
+  box-shadow: 0 20px 45px rgba(2, 3, 12, 0.5);
+  height: 80vh;
+  overflow-y: auto;
+} /* /// ADDED */
+
+.case-card-list { /* /// ADDED */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+} /* /// ADDED */
+
+.case-card { /* /// ADDED */
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #f8fafc;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+  border: 1px solid transparent;
+} /* /// ADDED */
+
+.case-card.active { /* /// ADDED */
+  border-color: rgba(99, 102, 241, 0.45);
+  box-shadow: 0 18px 36px rgba(99, 102, 241, 0.35);
+  transform: translateY(-2px);
+} /* /// ADDED */
+
+.case-card.empty { /* /// ADDED */
+  background: rgba(255, 255, 255, 0.08);
+  text-align: center;
+} /* /// ADDED */
+
+.case-card-row.patient span { /* /// ADDED */
+  color: rgba(255, 255, 255, 0.6);
+} /* /// ADDED */
+
+.case-card-chip { /* /// ADDED */
+  margin-top: 0.75rem;
+} /* /// ADDED */
+
+.map-info-chip { /* /// ADDED */
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 14px;
+  background: rgba(5, 8, 20, 0.85);
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+} /* /// ADDED */
+
+.map-info-chip.active { /* /// ADDED */
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(5, 6, 23, 0.4);
+} /* /// ADDED */
+
+.map-info-chip__severity { /* /// ADDED */
+  margin-top: 0.35rem;
+} /* /// ADDED */
+
+.map-shell .map-info-chip + .map-info-chip { /* /// ADDED */
+  margin-top: 0.5rem;
+} /* /// ADDED */
+
+.legend-card { /* /// ADDED */
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+} /* /// ADDED */
+
+.legend-row { /* /// ADDED */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+} /* /// ADDED */
+
+.legend-row:last-child { margin-bottom: 0; } /* /// ADDED */
+
+.legend-dot { /* /// ADDED */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+} /* /// ADDED */
+
+.legend-dot.high { background: #dc2626; } /* /// ADDED */
+.legend-dot.medium { background: #facc15; } /* /// ADDED */
+.legend-dot.low { background: #22c55e; } /* /// ADDED */
+
 @media (max-width: 768px) {
-  .map-wrapper {
-    height: 70vh;
-    min-height: 50vh;
+  .map-board { /* /// ADDED */
+    flex-direction: column;
   }
-}
 
-@media (max-width: 480px) {
-  .map-wrapper {
+  .map-shell {
     height: 60vh;
-    min-height: 40vh;
+  }
+
+  .case-info-card {
+    position: static;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .case-panel { /* /// ADDED */
+    width: 100%;
+    min-width: unset;
+    height: auto;
+  }
+
+  .legend-card { /* /// ADDED */
+    position: static;
+    margin-top: 1rem;
+  }
+
+  .map-info-chip { /* /// ADDED */
+    position: static;
   }
 }
-
-/* Tablet */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .map-wrapper {
-    height: 75vh;
-  }
-}
-

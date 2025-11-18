@@ -8,6 +8,8 @@ import {
   CardContent,
   Grid,
   LinearProgress,
+  Chip,
+  Divider,
 } from '@mui/material';
 import {
   LocalHospitalOutlined,
@@ -16,7 +18,7 @@ import {
   People,
 } from '@mui/icons-material';
 import { adminAPI } from '../services/api';
-import { sampleHospitalCapacity } from '../utils/sampleData';
+import { sampleHospitalCapacity, sampleHospitals } from '../utils/sampleData';
 import '../styles/HospitalsPage.css';
 
 // Simple Donut Chart Component
@@ -72,6 +74,7 @@ const DonutChart = ({ percentage, color, size = 100 }) => {
 export default function HospitalsPage() {
   const [capacity, setCapacity] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hospitals, setHospitals] = useState([]);
 
   useEffect(() => {
     loadCapacity();
@@ -83,24 +86,27 @@ export default function HospitalsPage() {
       const response = await adminAPI.getHospitals();
       if (response.data.data && Array.isArray(response.data.data)) {
         // Calculate aggregate from hospital data
-        const hospitals = response.data.data;
-        const totalBeds = hospitals.reduce((sum, h) => sum + (h.totalBeds || 0), 0);
-        const availableBeds = hospitals.reduce((sum, h) => sum + (h.availableBeds || 0), 0);
+        const hospitalsData = response.data.data;
+        const totalBeds = hospitalsData.reduce((sum, h) => sum + (h.totalBeds || 0), 0);
+        const availableBeds = hospitalsData.reduce((sum, h) => sum + (h.availableBeds || 0), 0);
         const occupiedBeds = totalBeds - availableBeds;
         setCapacity({
           totalBeds,
           availableBeds,
           occupiedBeds,
-          occupancyRate: Math.round((occupiedBeds / totalBeds) * 100),
+          occupancyRate: totalBeds > 0 ? Math.round((occupiedBeds / totalBeds) * 100) : 0,
           incoming: 8,
           wards: sampleHospitalCapacity.wards,
         });
+        setHospitals(hospitalsData);
       } else {
         setCapacity(sampleHospitalCapacity);
+        setHospitals(sampleHospitals);
       }
     } catch (error) {
       console.error('Error loading capacity:', error);
       setCapacity(sampleHospitalCapacity);
+      setHospitals(sampleHospitals);
     } finally {
       setLoading(false);
     }
@@ -211,32 +217,37 @@ export default function HospitalsPage() {
       </Grid>
 
       {/* Ward Details */}
-      <Grid container spacing={3}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+        Ward Utilization
+      </Typography>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
         {Object.entries(capacity.wards).map(([wardName, wardData]) => {
           const status = getWardStatus(wardData.occupancyRate);
           const color = getWardColor(wardData.occupancyRate);
           return (
             <Grid item xs={12} sm={6} md={3} key={wardName}>
-              <Card elevation={3} sx={{ height: '100%' }}>
+              <Card elevation={0} className="glass-card">
                 <CardContent>
-                  <Typography variant="h6" gutterBottom sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}>
-                    {wardName} Ward
-                  </Typography>
-                  <Chip
-                    label={status.label}
-                    color={status.color}
-                    size="small"
-                    sx={{ mb: 2 }}
-                  />
+                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Typography variant="subtitle1" sx={{ textTransform: 'capitalize', fontWeight: 600 }}>
+                      {wardName} Ward
+                    </Typography>
+                    <Chip label={status.label} color={status.color} size="small" />
+                  </Box>
                   <Box display="flex" justifyContent="center" my={2}>
                     <DonutChart percentage={wardData.occupancyRate} color={color} />
                   </Box>
-                  <Box sx={{ mt: 2 }}>
+                  <Box sx={{ mt: 1 }}>
                     <Typography variant="body2" color="text.secondary">
-                      Available: {wardData.available} / {wardData.total}
+                      Availability
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Occupied: {wardData.occupied}
+                    <LinearProgress
+                      variant="determinate"
+                      value={(wardData.available / wardData.total) * 100}
+                      sx={{ height: 6, borderRadius: 999, mb: 1 }}
+                    />
+                    <Typography variant="caption" color="text.secondary">
+                      {wardData.available} of {wardData.total} beds free
                     </Typography>
                   </Box>
                 </CardContent>
@@ -244,6 +255,79 @@ export default function HospitalsPage() {
             </Grid>
           );
         })}
+      </Grid>
+
+      {/* Hospital List */}
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+        Facilities Snapshot
+      </Typography>
+      <Grid container spacing={3}>
+        {hospitals.map((hospital) => (
+          <Grid item xs={12} md={6} key={hospital.id}>
+            <Paper elevation={0} className="glass-card" sx={{ p: 3, height: '100%' }}>
+              <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+                <Box>
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                    {hospital.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {hospital.address}
+                  </Typography>
+                </Box>
+                <Chip
+                  label={`${hospital.occupancyRate || Math.round((hospital.occupiedBeds / hospital.totalBeds) * 100)}%`}
+                  color={
+                    (hospital.occupancyRate || (hospital.occupiedBeds / hospital.totalBeds) * 100) >= 85
+                      ? 'error'
+                      : 'success'
+                  }
+                />
+              </Box>
+              <Box display="flex" gap={2} mb={2}>
+                <Box flex={1}>
+                  <Typography variant="caption" color="text.secondary">
+                    Occupancy
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                    {hospital.occupiedBeds}/{hospital.totalBeds}
+                  </Typography>
+                </Box>
+                <Box flex={1}>
+                  <Typography variant="caption" color="text.secondary">
+                    Available Beds
+                  </Typography>
+                  <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                    {hospital.availableBeds}
+                  </Typography>
+                </Box>
+              </Box>
+              <LinearProgress
+                variant="determinate"
+                value={(hospital.occupiedBeds / hospital.totalBeds) * 100}
+                sx={{ height: 8, borderRadius: 999, mb: 2 }}
+              />
+              <Divider sx={{ my: 2 }} />
+              <Grid container spacing={2}>
+                {hospital.wards &&
+                  Object.entries(hospital.wards).map(([wardName, ward]) => (
+                    <Grid item xs={6} key={wardName}>
+                      <Typography variant="body2" sx={{ textTransform: 'capitalize', fontWeight: 600 }}>
+                        {wardName}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {ward.available}/{ward.total} available
+                      </Typography>
+                      <LinearProgress
+                        variant="determinate"
+                        value={(ward.occupied / ward.total) * 100}
+                        sx={{ height: 4, borderRadius: 999, mt: 0.5 }}
+                      />
+                    </Grid>
+                  ))}
+              </Grid>
+            </Paper>
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );

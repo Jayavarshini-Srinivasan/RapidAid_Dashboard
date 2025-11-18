@@ -74,11 +74,25 @@ export const setupSocketListeners = (callbacks) => {
     }
   });
 
+  socketInstance.on('updateCaseLocation', (data) => { // /// ADDED
+    if (callbacks.onCaseLocationUpdate) { // /// ADDED
+      callbacks.onCaseLocationUpdate(data); // /// ADDED
+    } // /// ADDED
+  }); // /// ADDED
+
+  socketInstance.on('updateCaseSeverity', (data) => { // /// ADDED
+    if (callbacks.onCaseSeverityUpdate) { // /// ADDED
+      callbacks.onCaseSeverityUpdate(data); // /// ADDED
+    } // /// ADDED
+  }); // /// ADDED
+
   return () => {
     socketInstance.off('driverLocationUpdate');
     socketInstance.off('patientLocationUpdate');
     socketInstance.off('newEmergencyRequest');
     socketInstance.off('emergencyStatus');
+    socketInstance.off('updateCaseLocation'); // /// ADDED
+    socketInstance.off('updateCaseSeverity'); // /// ADDED
   };
 };
 
