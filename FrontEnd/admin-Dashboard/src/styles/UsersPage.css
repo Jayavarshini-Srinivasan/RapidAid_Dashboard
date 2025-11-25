@@ -1,0 +1,12 @@
+/* Users Page Styles - Responsive */
+
+.users-container {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .users-container {
+    padding: 1rem;
+  }
+}
+

@@ -1,0 +1,52 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background: #1D3557;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  color: #F1FAEE;
+}
+
+.nav-link {
+  color: #F1FAEE;
+  text-decoration: none;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.nav-link:hover {
+  background: #0A6CF1;
+}
+
+.logout-btn {
+  margin-top: auto;
+  padding: 12px;
+  background: #E63946;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #CC2F2F;
+}
+
+.content {
+  flex: 1;
+  background: #F9FAFB;
+}
+

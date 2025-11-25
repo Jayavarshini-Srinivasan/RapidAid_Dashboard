@@ -1,0 +1,12 @@
+/* Notifications Page Styles - Responsive */
+
+.notifications-container {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .notifications-container {
+    padding: 1rem;
+  }
+}
+

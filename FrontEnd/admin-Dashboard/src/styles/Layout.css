@@ -1,0 +1,26 @@
+/* Layout Styles - Responsive with viewport units */
+
+@media (max-width: 768px) {
+  .MuiDrawer-paper {
+    width: 70vw !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .MuiDrawer-paper {
+    width: 85vw !important;
+  }
+}
+
+/* Ensure content is responsive */
+.MuiBox-root {
+  box-sizing: border-box;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .MuiBox-root[role="main"] {
+    padding: 1rem !important;
+  }
+}
+

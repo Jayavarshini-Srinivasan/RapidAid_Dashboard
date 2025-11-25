@@ -1,0 +1,12 @@
+/* Drivers Page Styles - Responsive */
+
+.drivers-container {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .drivers-container {
+    overflow-x: auto;
+  }
+}
+

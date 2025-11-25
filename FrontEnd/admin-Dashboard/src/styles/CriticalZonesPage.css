@@ -1,0 +1,58 @@
+/* Page container */
+.critical-zones-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Header */
+.cz-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Toolbar */
+.cz-toolbar {
+  border-radius: 14px;
+  background: #fff;
+}
+.cz-toolbar-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Map wrapper */
+.cz-map-wrapper {
+  position: relative;
+}
+.cz-map-loading {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cz-empty-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  padding: 12px 14px;
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgba(15,23,42,0.08);
+  background: #fff;
+}
+.cz-legend {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .critical-zones-container {
+    padding: 16px;
+  }
+}

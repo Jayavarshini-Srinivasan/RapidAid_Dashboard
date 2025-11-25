@@ -1,0 +1,12 @@
+/* Patients Page Styles - Responsive */
+
+.patients-container {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .patients-container {
+    overflow-x: auto;
+  }
+}
+

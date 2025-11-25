@@ -1,0 +1,21 @@
+{
+  "name": "rapidaid-fullstack",
+  "version": "1.0.0",
+  "description": "RapidAid Full-Stack Emergency Medical Services System",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend/patient-app",
+    "frontend/driver-app",
+    "frontend/admin-dashboard"
+  ],
+  "scripts": {
+    "backend:dev": "cd backend && npm run dev",
+    "backend:start": "cd backend && npm start",
+    "patient:start": "cd frontend/patient-app && npm start",
+    "driver:start": "cd frontend/driver-app && npm start",
+    "admin:dev": "cd frontend/admin-dashboard && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend/patient-app && npm install && cd ../driver-app && npm install && cd ../admin-dashboard && npm install"
+  }
+}
+

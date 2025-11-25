@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "RapidAid Driver",
+    "slug": "rapidaid-driver",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A6CF1"
+    },
+    "ios": {
+      "bundleIdentifier": "com.rapidaid.driver"
+    },
+    "android": {
+      "package": "com.rapidaid.driver",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "ACCESS_BACKGROUND_LOCATION"]
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow RapidAid Driver to track your location.",
+          "locationAlwaysPermission": "Allow RapidAid Driver to track your location in background."
+        }
+      ]
+    ]
+  }
+}
+

@@ -1,0 +1,12 @@
+/* Emergencies Page Styles - Responsive */
+
+.emergencies-container {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .emergencies-container {
+    overflow-x: auto;
+  }
+}
+
